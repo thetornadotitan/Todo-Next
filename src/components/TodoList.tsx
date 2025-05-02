@@ -7,9 +7,9 @@ export default function TodoList({ initialTodos }: { initialTodos: Todo[] }) {
   const [todos, setTodos] = useState(initialTodos);
   const [editorVisible, setEditorVisible] = useState(false);
   const [lastMessage, setLastMessage] = useState("DEFAULT MESSAGE");
-  const [editTodo, setEditTodo] = useState<Todo>();
+  const [todoToEdit, setEditTodo] = useState<Todo>();
 
-  function removeTodo(todo: Todo) {
+  function deleteTodo(todo: Todo) {
     setTodos(todos.filter((t) => t.id !== todo.id));
   }
 
@@ -41,11 +41,11 @@ export default function TodoList({ initialTodos }: { initialTodos: Todo[] }) {
     setEditorVisible(false);
   }
 
-  function saveEdits() {
-    if (editTodo === null || editTodo === undefined) return;
+  function editTodo() {
+    if (todoToEdit === null || todoToEdit === undefined) return;
 
     const updated = todos.map((t) => {
-      if (t.id === editTodo.id) editTodo.title = lastMessage;
+      if (t.id === todoToEdit.id) todoToEdit.title = lastMessage;
       return t;
     });
     setTodos(updated);
@@ -56,6 +56,7 @@ export default function TodoList({ initialTodos }: { initialTodos: Todo[] }) {
   return (
     <div className="flex flex-col">
       <div
+        //TODO: The new button should show a form for adding a new Todo rather than populating one with defualts per the doc
         onClick={() => {
           addTodo("New");
         }}
@@ -80,7 +81,7 @@ export default function TodoList({ initialTodos }: { initialTodos: Todo[] }) {
               </div>
               <div
                 onClick={() => {
-                  removeTodo(todo);
+                  deleteTodo(todo);
                 }}
                 className="bg-red-500 p-1 rounded cursor-pointer hover:bg-red-900"
               >
@@ -113,7 +114,7 @@ export default function TodoList({ initialTodos }: { initialTodos: Todo[] }) {
         <div className="flex self-center gap-4 select-none">
           <div
             onClick={() => {
-              saveEdits();
+              editTodo();
             }}
             className="bg-blue-500 p-1 rounded cursor-pointer hover:bg-blue-900"
           >
