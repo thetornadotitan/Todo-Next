@@ -39,7 +39,7 @@ export default async function Page() {
     if (typeof e === "string") return <div>{e}</div>;
     else if (e instanceof Error)
       return (
-        <div>
+        <div className="w-screen h-screen flex justify-center items-center text-red-500">
           {e.name}
           <br />
           {e.message}
@@ -48,7 +48,12 @@ export default async function Page() {
           {e.stack}
         </div>
       );
-    else return <div>Unknown error occured</div>;
+    else
+      return (
+        <div className="w-screen h-screen flex justify-center items-center text-red-500">
+          Unknown error occured
+        </div>
+      );
   }
 }
 

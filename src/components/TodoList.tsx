@@ -6,8 +6,10 @@ import { useState } from "react";
 export default function TodoList({ initialTodos }: { initialTodos: Todo[] }) {
   const [todos, setTodos] = useState(initialTodos);
   const [editorVisible, setEditorVisible] = useState(false);
+  const [creatorVisible, setCreatorVisible] = useState(false);
   const [lastMessage, setLastMessage] = useState("DEFAULT MESSAGE");
   const [todoToEdit, setEditTodo] = useState<Todo>();
+  const [filterStatus, setFilterStatus] = useState(0);
 
   function deleteTodo(todo: Todo) {
     setTodos(todos.filter((t) => t.id !== todo.id));
@@ -22,6 +24,19 @@ export default function TodoList({ initialTodos }: { initialTodos: Todo[] }) {
     };
 
     setTodos([...todos, newTodo]);
+    hideCreator();
+  }
+
+  function editTodo() {
+    if (todoToEdit === null || todoToEdit === undefined) return;
+
+    const updated = todos.map((t) => {
+      if (t.id === todoToEdit.id) todoToEdit.title = lastMessage;
+      return t;
+    });
+    setTodos(updated);
+
+    setEditorVisible(false);
   }
 
   function toggleCompleteness(todo: Todo) {
@@ -41,32 +56,62 @@ export default function TodoList({ initialTodos }: { initialTodos: Todo[] }) {
     setEditorVisible(false);
   }
 
-  function editTodo() {
-    if (todoToEdit === null || todoToEdit === undefined) return;
+  function showCreator() {
+    setLastMessage("");
+    setCreatorVisible(true);
+  }
 
-    const updated = todos.map((t) => {
-      if (t.id === todoToEdit.id) todoToEdit.title = lastMessage;
-      return t;
-    });
-    setTodos(updated);
+  function hideCreator() {
+    setCreatorVisible(false);
+  }
 
-    setEditorVisible(false);
+  function chageFiltering(e: React.ChangeEvent<HTMLSelectElement>) {
+    setFilterStatus(Number(e.target.value));
   }
 
   return (
     <div className="flex flex-col">
-      <div
-        //TODO: The new button should show a form for adding a new Todo rather than populating one with defualts per the doc
-        onClick={() => {
-          addTodo("New");
-        }}
-        className="m-4 bg-blue-500 p-1 rounded cursor-pointer hover:bg-blue-900 self-center text-center select-none"
-      >
-        Create new Todo
+      <div className="flex justify-center flex-wrap">
+        <div
+          onClick={() => {
+            showCreator();
+          }}
+          className="m-4 bg-blue-500 p-1 rounded cursor-pointer hover:bg-blue-900 text-center select-none">
+          Create new Todo
+        </div>
+        <div className="self-center">
+          <label htmlFor="filtering">Filter By:</label>
+          &nbsp;
+          <select
+            onChange={chageFiltering}
+            className="h-fit"
+            name="filtering"
+            id="filtering">
+            <option className="bg-[#333333]" value="0">
+              None
+            </option>
+            <option className="bg-[#333333]" value="1">
+              Complete
+            </option>
+            <option className="bg-[#333333]" value="-1">
+              In-Progress
+            </option>
+          </select>
+        </div>
       </div>
       <div className="flex gap-4 justify-center flex-wrap">
         {todos.map((todo) => (
-          <div className="w-64 flex flex-col rounded border p-1" key={todo.id}>
+          <div
+            className={`w-64 flex flex-col rounded border p-1 ${
+              filterStatus === 0
+                ? ""
+                : filterStatus === 1 && todo.completed === true
+                ? ""
+                : filterStatus === -1 && todo.completed === false
+                ? ""
+                : "hidden"
+            }`}
+            key={todo.id}>
             <div>{todo.id}</div>
             <div className="grow">{todo.title}</div>
             <div>{todo.completed ? "Completed" : "In-Progress"}</div>
@@ -75,16 +120,14 @@ export default function TodoList({ initialTodos }: { initialTodos: Todo[] }) {
                 onClick={() => {
                   toggleCompleteness(todo);
                 }}
-                className="bg-blue-500 p-1 rounded cursor-pointer hover:bg-blue-900"
-              >
+                className="bg-blue-500 p-1 rounded cursor-pointer hover:bg-blue-900">
                 Toggle
               </div>
               <div
                 onClick={() => {
                   deleteTodo(todo);
                 }}
-                className="bg-red-500 p-1 rounded cursor-pointer hover:bg-red-900"
-              >
+                className="bg-red-500 p-1 rounded cursor-pointer hover:bg-red-900">
                 Delete
               </div>
               <div
@@ -92,8 +135,7 @@ export default function TodoList({ initialTodos }: { initialTodos: Todo[] }) {
                   setEditTodo(todo);
                   showEditor(todo.title);
                 }}
-                className="bg-yellow-500 p-1 rounded cursor-pointer hover:bg-yellow-900"
-              >
+                className="bg-yellow-500 p-1 rounded cursor-pointer hover:bg-yellow-900">
                 Edit
               </div>
             </div>
@@ -101,35 +143,59 @@ export default function TodoList({ initialTodos }: { initialTodos: Todo[] }) {
         ))}
       </div>
 
-      <div
+      <form
+        action={() => {
+          editTodo();
+        }}
         className={`absolute bg-[#000000AA] w-screen h-screen ${
           editorVisible ? "flex" : "hidden"
-        } flex-col justify-center gap-4`}
-      >
+        } flex-col justify-center gap-4`}>
         <textarea
           className="bg-[#333333] h-75/100 w-75/100 self-center p-2"
           value={lastMessage}
+          required
           onChange={(e) => setLastMessage(e.target.value)}
         />
         <div className="flex self-center gap-4 select-none">
-          <div
-            onClick={() => {
-              editTodo();
-            }}
-            className="bg-blue-500 p-1 rounded cursor-pointer hover:bg-blue-900"
-          >
+          <button className="bg-blue-500 p-1 rounded cursor-pointer hover:bg-blue-900">
             Save
-          </div>
-          <div
+          </button>
+          <button
             onClick={() => {
               hideEditor();
             }}
-            className="bg-red-500 p-1 rounded cursor-pointer hover:bg-red-900"
-          >
+            className="bg-red-500 p-1 rounded cursor-pointer hover:bg-red-900">
             Cancel
-          </div>
+          </button>
         </div>
-      </div>
+      </form>
+
+      <form
+        action={() => {
+          addTodo(lastMessage);
+        }}
+        className={`absolute bg-[#000000AA] w-screen h-screen ${
+          creatorVisible ? "flex" : "hidden"
+        } flex-col justify-center gap-4`}>
+        <textarea
+          className="bg-[#333333] h-75/100 w-75/100 self-center p-2"
+          value={lastMessage}
+          required
+          onChange={(e) => setLastMessage(e.target.value)}
+        />
+        <div className="flex self-center gap-4 select-none">
+          <button className="bg-blue-500 p-1 rounded cursor-pointer hover:bg-blue-900">
+            Save
+          </button>
+          <button
+            onClick={() => {
+              hideCreator();
+            }}
+            className="bg-red-500 p-1 rounded cursor-pointer hover:bg-red-900">
+            Cancel
+          </button>
+        </div>
+      </form>
     </div>
   );
 }
