@@ -1,0 +1,6 @@
+Learned about type narrowing due to the need to validate the JSON coming in as a Todo type interface.
+See isTodo in todos/page.tsx.
+
+Path aliasing in tsconfig
+e.g: "@lib/*": ["./lib/*"]
+After some additional development seperate paths were not needed but good to know how it can be done.
