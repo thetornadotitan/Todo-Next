@@ -12,6 +12,34 @@
   --font-mono: var(--font-geist-mono);
 }
 
+@theme {
+  --animate-fade-in: fade-in 0.25s ease-in-out;
+  --animate-hover-enlarge: hover-enlarge 0.05s 1 forwards ease-in-out;
+
+  @keyframes fade-in {
+    0% {
+      opacity: 0%;
+      transform: translate(0, -10);
+    }
+    30% {
+      opacity: 0%;
+    }
+    100% {
+      opacity: 100%;
+      transform: translate(0, 0);
+    }
+  }
+
+  @keyframes hover-enlarge {
+    0% {
+      transform: scale(1);
+    }
+    100% {
+      transform: scale(1.1);
+    }
+  }
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;

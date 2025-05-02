@@ -76,7 +76,7 @@ export default function TodoList({ initialTodos }: { initialTodos: Todo[] }) {
           onClick={() => {
             showCreator();
           }}
-          className="m-4 bg-blue-500 p-1 rounded cursor-pointer hover:bg-blue-900 text-center select-none">
+          className="m-4 bg-blue-500 p-1 rounded cursor-pointer text-shadow-xs/100 hover:bg-blue-700 hover:animate-hover-enlarge text-center select-none active:hover:bg-blue-900 active:inset-shadow-sm/66">
           Create new Todo
         </div>
         <div className="self-center">
@@ -102,7 +102,7 @@ export default function TodoList({ initialTodos }: { initialTodos: Todo[] }) {
       <div className="flex gap-4 justify-center flex-wrap">
         {todos.map((todo) => (
           <div
-            className={`w-64 flex flex-col rounded border p-1 ${
+            className={`w-64 flex flex-col rounded border p-1 animate-fade-in ${
               filterStatus === 0
                 ? ""
                 : filterStatus === 1 && todo.completed === true
@@ -120,14 +120,14 @@ export default function TodoList({ initialTodos }: { initialTodos: Todo[] }) {
                 onClick={() => {
                   toggleCompleteness(todo);
                 }}
-                className="bg-blue-500 p-1 rounded cursor-pointer hover:bg-blue-900">
+                className="bg-blue-500 p-1 rounded cursor-pointer text-shadow-xs/100 hover:bg-blue-700 hover:animate-hover-enlarge active:hover:bg-blue-900 active:inset-shadow-sm/66">
                 Toggle
               </div>
               <div
                 onClick={() => {
                   deleteTodo(todo);
                 }}
-                className="bg-red-500 p-1 rounded cursor-pointer hover:bg-red-900">
+                className="bg-red-500 p-1 rounded cursor-pointer text-shadow-xs/100 hover:bg-red-700 hover:animate-hover-enlarge active:hover:bg-red-900 active:inset-shadow-sm/66">
                 Delete
               </div>
               <div
@@ -135,7 +135,7 @@ export default function TodoList({ initialTodos }: { initialTodos: Todo[] }) {
                   setEditTodo(todo);
                   showEditor(todo.title);
                 }}
-                className="bg-yellow-500 p-1 rounded cursor-pointer hover:bg-yellow-900">
+                className="bg-yellow-500 p-1 rounded cursor-pointer text-shadow-xs/100 hover:bg-yellow-700 hover:animate-hover-enlarge active:hover:bg-yellow-900 active:inset-shadow-sm/66">
                 Edit
               </div>
             </div>
@@ -157,14 +157,14 @@ export default function TodoList({ initialTodos }: { initialTodos: Todo[] }) {
           onChange={(e) => setLastMessage(e.target.value)}
         />
         <div className="flex self-center gap-4 select-none">
-          <button className="bg-blue-500 p-1 rounded cursor-pointer hover:bg-blue-900">
+          <button className="bg-blue-500 p-1 rounded cursor-pointer text-shadow-xs/100 hover:bg-blue-700 hover:animate-hover-enlarge active:hover:bg-blue-900 active:inset-shadow-sm/66">
             Save
           </button>
           <button
             onClick={() => {
               hideEditor();
             }}
-            className="bg-red-500 p-1 rounded cursor-pointer hover:bg-red-900">
+            className="bg-red-500 p-1 rounded cursor-pointer text-shadow-xs/100 hover:bg-red-700 hover:animate-hover-enlarge active:hover:bg-red-900 active:inset-shadow-sm/66">
             Cancel
           </button>
         </div>
@@ -184,14 +184,14 @@ export default function TodoList({ initialTodos }: { initialTodos: Todo[] }) {
           onChange={(e) => setLastMessage(e.target.value)}
         />
         <div className="flex self-center gap-4 select-none">
-          <button className="bg-blue-500 p-1 rounded cursor-pointer hover:bg-blue-900">
+          <button className="bg-blue-500 p-1 rounded cursor-pointer text-shadow-xs/100 hover:bg-blue-700 hover:animate-hover-enlarge active:hover:bg-blue-900 active:inset-shadow-sm/66">
             Save
           </button>
           <button
             onClick={() => {
               hideCreator();
             }}
-            className="bg-red-500 p-1 rounded cursor-pointer hover:bg-red-900">
+            className="bg-red-500 p-1 rounded cursor-pointer text-shadow-xs/100 hover:bg-red-700 hover:animate-hover-enlarge active:hover:bg-red-900 active:inset-shadow-sm/66">
             Cancel
           </button>
         </div>
