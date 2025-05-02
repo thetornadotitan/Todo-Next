@@ -7,6 +7,12 @@ For now it returns a few different results based on the success or failure of th
 
 import Todo from "@/lib/types";
 import TodoList from "@/components/TodoList";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Todos",
+  description: "A page of todos",
+};
 
 export default async function Page() {
   try {
