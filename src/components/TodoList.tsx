@@ -71,6 +71,7 @@ export default function TodoList({ initialTodos }: { initialTodos: Todo[] }) {
 
   return (
     <div className="flex flex-col">
+      {/* Add todo button and filtering selection*/}
       <div className="flex justify-center flex-wrap">
         <div
           onClick={() => {
@@ -99,6 +100,8 @@ export default function TodoList({ initialTodos }: { initialTodos: Todo[] }) {
           </select>
         </div>
       </div>
+
+      {/*Map to conditionally render todo elements*/}
       <div className="flex gap-4 justify-center flex-wrap">
         {todos.map((todo) => (
           <div
@@ -143,6 +146,7 @@ export default function TodoList({ initialTodos }: { initialTodos: Todo[] }) {
         ))}
       </div>
 
+      {/*Editor element for editing a todos title*/}
       <form
         action={() => {
           editTodo();
@@ -170,6 +174,7 @@ export default function TodoList({ initialTodos }: { initialTodos: Todo[] }) {
         </div>
       </form>
 
+      {/*Todo creation element*/}
       <form
         action={() => {
           addTodo(lastMessage);
